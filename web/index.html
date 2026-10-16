@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MODIASSIST - Accessible Beauty Technology</title>
+    <meta
+      name="description"
+      content="A ModiFace-inspired web demo for AI makeup guidance with voice and haptic feedback."
+    />
+    <link rel="stylesheet" href="./styles.css?v=blind-hero" />
+  </head>
+  <body>
+    <header class="nav">
+      <a class="logo" href="#top" aria-label="MODIASSIST">
+        <strong>MODIASSIST</strong>
+        <span>A L'OREAL HACKATHON CONCEPT</span>
+      </a>
+      <nav aria-label="页面导航">
+        <a href="#services">Our Services</a>
+        <a href="#demo">Live Demo</a>
+        <a href="#science">Science</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Changing the way the world experiences beauty</h1>
+          <p>AI/AR technology built for accessible beauty, backed by real-time guidance</p>
+        </div>
+        <img class="hero-person" src="./assets/blind-hero.png" alt="佩戴墨镜并手持白杖的时尚视障女性" />
+        <div class="hero-chip chip-one">1st accessible makeup companion</div>
+        <div class="hero-chip chip-two">Voice + haptic guidance</div>
+        <div class="hero-chip chip-three">A L'Oreal beauty tech concept</div>
+      </section>
+
+      <section class="brand-cloud" aria-label="合作品牌示意">
+        <div>KERASTASE</div>
+        <div>MICROSOFT</div>
+        <div>OPENAI</div>
+        <div>NYX</div>
+        <div>ARMANI beauty</div>
+        <div>MAYBELLINE</div>
+        <div>PRADA beauty</div>
+        <div>YSL</div>
+        <div>GARNIER</div>
+      </section>
+
+      <section class="manifesto" id="services">
+        <h2>Beauty Reimagined in Real Time</h2>
+        <p>
+          当用户看不清口红边界、粉底均匀度或眼妆对称性时，系统用视觉识别理解当前动作，
+          用 AI 判断下一步，并通过自然语音与腕带震动把指导送到用户手上。
+        </p>
+      </section>
+
+      <section class="feature-split">
+        <figure>
+          <img src="./assets/beauty-agent-product.png" alt="口红、摄像头和触觉腕带产品概念图" />
+          <span class="before-after-line"></span>
+        </figure>
+        <div>
+          <p class="eyebrow">MAKEUP ACCESSIBILITY</p>
+          <h2>Real-time guidance, true to every movement</h2>
+          <p>
+            MVP 聚焦口红引导：从人脸检测、唇部关键点识别，到误差计算、方向反馈和最终质检，
+            让一次化妆过程可以独立完成、可被验证、也更有安全感。
+          </p>
+        </div>
+      </section>
+
+      <section class="live-demo" id="demo">
+        <div class="demo-copy">
+          <p class="eyebrow">INTERACTIVE CONCEPT DEMO</p>
+          <h2 id="cameraTitle">口红边界识别</h2>
+          <p id="voiceText">接下来要往左边多涂一点哦，左侧震动会提醒你。</p>
+          <p>此处展示模拟流程和示例指标。使用摄像头识别与中文语音，请点击下方实时体验入口；目前实时功能聚焦口红引导。</p>
+          <div class="demo-actions">
+            <button class="primary-action" id="nextStep" type="button">Next Step</button>
+            <button class="ghost-action" id="autoRun" type="button">Auto play</button>
+            <button class="ghost-action" id="resetTop" type="button">Reset</button>
+            <a class="primary-action real-demo-link" href="./vision-demo/index.html">开始实时体验 · 摄像头 + 语音</a>
+          </div>
+          <div class="scenario-tabs" role="tablist" aria-label="化妆任务">
+            <button class="scenario-tab is-selected" type="button" data-scenario="lip">Lipstick</button>
+            <button class="scenario-tab" type="button" data-scenario="contour">Contour</button>
+            <button class="scenario-tab" type="button" data-scenario="base">Foundation</button>
+            <button class="scenario-tab" type="button" data-scenario="eye">Eyeshadow</button>
+          </div>
+        </div>
+
+        <div class="demo-device">
+          <div class="device-head">
+            <span id="cameraStatus">采集中</span>
+            <strong id="feedbackMode">纠偏中</strong>
+          </div>
+          <div class="face-stage" aria-label="模拟摄像头识别画面">
+            <div class="scan-line"></div>
+            <div class="face-outline">
+              <span class="landmark left-eye"></span>
+              <span class="landmark right-eye"></span>
+              <span class="landmark nose"></span>
+              <span class="lip-zone" id="targetZone"></span>
+              <span class="current-dot" id="currentDot"></span>
+              <span class="target-dot" id="targetDot"></span>
+            </div>
+            <div class="axis-label x-axis">X <strong id="xError">+80</strong></div>
+            <div class="axis-label y-axis">Y <strong id="yError">-60</strong></div>
+          </div>
+
+          <div class="wrist-row">
+            <div>
+              <span>HAPTIC OUTPUT</span>
+              <strong id="hapticPulse">左侧马达 70%</strong>
+            </div>
+            <div class="band-core">
+              <i></i>
+              <strong id="bandCommand">LEFT</strong>
+              <small id="bandHint">左侧震动 300ms</small>
+            </div>
+          </div>
+
+          <div class="micro-actions">
+            <button type="button" data-command="LEFT">Left bias</button>
+            <button type="button" data-command="RIGHT">Right bias</button>
+            <button type="button" data-command="COMPLETE">Complete</button>
+          </div>
+          <div class="motor-map" aria-hidden="true">
+            <span class="motor" data-motor="up">Up</span>
+            <span class="motor is-active" data-motor="left">Left</span>
+            <span class="motor" data-motor="right">Right</span>
+            <span class="motor" data-motor="down">Down</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-section">
+        <p class="eyebrow">USER JOURNEY</p>
+        <h2>One flow from setup to makeup quality check</h2>
+        <div class="journey-strip" aria-label="当前演示旅程">
+          <div class="journey-step is-active" data-step-dot="0"><span>01</span><strong>佩戴设备</strong></div>
+          <div class="journey-step" data-step-dot="1"><span>02</span><strong>识别定位</strong></div>
+          <div class="journey-step" data-step-dot="2"><span>03</span><strong>实时纠偏</strong></div>
+          <div class="journey-step" data-step-dot="3"><span>04</span><strong>完成质检</strong></div>
+        </div>
+        <div class="flow-board" aria-label="MVP 用户流程">
+          <div class="flow-card is-active" data-flow="0"><span>1</span><strong>打开摄像头，戴上腕带</strong><p>检测摄像头、扬声器、BLE 连接和腕带电量。</p></div>
+          <div class="flow-card" data-flow="1"><span>2</span><strong>拿出口红，坐好</strong><p>视觉模型定位人脸、嘴唇区域和关键点。</p></div>
+          <div class="flow-card" data-flow="2"><span>3</span><strong>开始涂抹，实时纠偏</strong><p>AI 判断 X/Y 偏差，并转化为语音与震动方向。</p></div>
+          <div class="flow-card" data-flow="3"><span>4</span><strong>用户调整后继续涂抹</strong><p>持续识别，直到误差收敛到目标范围。</p></div>
+          <div class="flow-card" data-flow="4"><span>5</span><strong>用户停手，妆容质检</strong><p>判断是否涂出边界、是否对称、是否需要补涂。</p></div>
+          <div class="flow-card" data-flow="5"><span>6</span><strong>夸夸陪伴，化妆完成</strong><p>用自然语气给出完成确认和积极反馈。</p></div>
+        </div>
+      </section>
+
+      <section class="science" id="science">
+        <div>
+          <h2>Backed by product metrics</h2>
+          <p>
+            PRD 中的验收标准被转化为可演示指标，评审可以看到系统不是只会聊天，
+            而是在追踪完成率、误差、延迟和识别稳定性。
+          </p>
+        </div>
+        <div class="metric-grid">
+          <article><span>任务完成率</span><strong id="completionRate">86%</strong></article>
+          <article><span>平均完成耗时</span><strong id="durationMetric">02:48</strong></article>
+          <article><span>定位误差</span><strong id="errorMetric">8px</strong></article>
+          <article><span>反馈延迟</span><strong id="latencyMetric">180ms</strong></article>
+        </div>
+      </section>
+
+      <section class="agent-section">
+        <p class="eyebrow">AGENT ARCHITECTURE</p>
+        <h2>From perception to confidence</h2>
+        <ol class="agent-chain">
+          <li class="is-current" data-chain="0"><span>01</span><strong>多模态感知层</strong><p id="senseText">摄像头识别人脸、唇部和当前口红位置。</p></li>
+          <li data-chain="1"><span>02</span><strong>意图识别模块</strong><p id="intentText">用户正在进行口红涂抹，需要起始点和边界提醒。</p></li>
+          <li data-chain="2"><span>03</span><strong>任务规划模块</strong><p id="planText">比较目标位置与当前动作，生成方向建议。</p></li>
+          <li data-chain="3"><span>04</span><strong>结果生成模块</strong><p id="resultText">输出语音提醒和腕带震动指令。</p></li>
+        </ol>
+        <div class="recognition-list">
+          <div><span>人脸检测</span><strong id="faceConfidence">98%</strong></div>
+          <div><span>关键点识别</span><strong id="landmarkConfidence">94%</strong></div>
+          <div><span>姿态稳定</span><strong id="poseStatus">良好</strong></div>
+        </div>
+      </section>
+
+      <section class="scope-section" id="scope">
+        <article>
+          <p class="eyebrow">MVP INCLUDES</p>
+          <h2>完整实时闭环</h2>
+          <ul>
+            <li>摄像头视频采集与状态检测</li>
+            <li>人脸、唇部、关键点识别</li>
+            <li>X/Y 误差计算与方向判断</li>
+            <li>语音提醒、夸夸陪伴、触觉反馈</li>
+          </ul>
+        </article>
+        <article>
+          <p class="eyebrow">NEXT</p>
+          <h2>后续生态扩展</h2>
+          <ul>
+            <li>完整实体硬件工业设计</li>
+            <li>复杂人格与长期记忆</li>
+            <li>离线 RAG 与大规模内容体系</li>
+            <li>社区、游戏化和产品识别生态</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

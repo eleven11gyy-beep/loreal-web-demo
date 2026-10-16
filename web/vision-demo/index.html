@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d1230" />
+    <title>Vision Demo — MODIASSIST</title>
+    <link rel="stylesheet" href="./vision-demo.css" />
+  </head>
+  <body>
+    <main class="vision-shell">
+      <header class="vision-nav">
+        <a class="back-link" href="../index.html">← Back to MODIASSIST</a>
+        <div class="wordmark"><strong>MODIASSIST</strong><span>VISION LAB / BROWSER RUNTIME</span></div>
+        <div class="service-pill" id="servicePill"><i></i><span id="serviceText">Browser ready</span></div>
+      </header>
+
+      <section class="vision-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">REAL-TIME LIP GUIDANCE</p>
+          <h1>Make the next<br /><em>move</em> visible.</h1>
+          <p class="hero-lede">Point at the lipstick tip or hold it near your lips. The vision loop turns every small correction into a clear direction.</p>
+          <div class="hero-notes">
+            <span><b>01</b> Face landmarks</span>
+            <span><b>02</b> Target geometry</span>
+            <span><b>03</b> Haptic-ready cue</span>
+          </div>
+        </div>
+
+        <section class="camera-card" aria-label="Live vision camera">
+          <div class="camera-card-head">
+            <div><span class="live-dot"></span><span id="cameraState">READY TO START</span></div>
+            <span class="frame-label">FRAME / 16:9</span>
+          </div>
+          <div class="video-wrap" id="videoWrap">
+            <div class="video-placeholder" id="videoPlaceholder">
+              <span class="placeholder-ring"></span>
+              <strong>Camera is waiting</strong>
+              <small>Press Start Camera, then allow camera access.</small>
+            </div>
+            <video id="cameraVideo" autoplay playsinline muted aria-hidden="true"></video>
+            <canvas id="videoFeed" role="img" aria-label="Live camera view with lip and guidance markers"></canvas>
+            <div class="crosshair" aria-hidden="true"><i></i><b></b></div>
+            <div class="pointer-help" id="pointerHelp">Lipstick mode: show the product near your lips</div>
+          </div>
+          <div class="camera-actions">
+            <button class="button button-primary" id="startCamera" type="button">Start Camera <span>↗</span></button>
+            <button class="button button-quiet" id="stopCamera" type="button" disabled>Stop</button>
+          </div>
+          <div class="speech-controls" role="group" aria-label="中文语音控制">
+            <button class="button button-quiet" id="testSpeech" type="button">测试语音</button>
+            <button class="button button-quiet" id="toggleSpeech" type="button" aria-pressed="true">关闭语音</button>
+          </div>
+          <p class="speech-status" id="speechStatus" role="status">正在检查语音支持。</p>
+          <p class="speech-status">首次体验需下载模型，请稍候。左右方向以当前镜像画面为准；请先小幅移动确认方向。</p>
+        </section>
+      </section>
+
+      <section class="control-deck" aria-label="Vision controls and guidance">
+        <div class="deck-main">
+          <div class="deck-heading">
+            <div><p class="eyebrow">GUIDANCE SIGNAL</p><h2 id="guidanceTitle">Waiting for a face</h2></div>
+            <span class="status-code" id="statusCode">IDLE</span>
+          </div>
+          <p class="guidance-message" id="guidanceMessage" role="status">Start the camera, then keep one face centered in the frame.</p>
+          <div class="direction-lockup"><span class="direction-arrow" id="directionArrow">↗</span><div><small>DIRECTION</small><strong id="directionValue">—</strong></div></div>
+          <div class="meter-row"><div><span>Distance to target</span><strong id="distanceValue">—</strong></div><div class="meter"><i id="distanceMeter"></i></div></div>
+          <div class="meter-row"><div><span>Frame rate</span><strong id="fpsValue">—</strong></div><div class="meter meter-teal"><i id="fpsMeter"></i></div></div>
+        </div>
+
+        <aside class="deck-side">
+          <div class="target-card"><span class="eyebrow">CURRENT TARGET</span><strong id="targetValue">Lip peak</strong><small id="targetProgress">Region 1 / 5</small></div>
+          <div class="mode-card"><span class="eyebrow">TRACKING INPUT</span><div class="mode-switch" role="group" aria-label="Tracking mode"><button class="mode-button" data-mode="mouse" type="button">Mouse tip</button><button class="mode-button is-selected" data-mode="lipstick" type="button">Lipstick</button></div><p id="modeHint">Hold a saturated red or pink lipstick near your lips.</p></div>
+          <div class="control-grid"><button class="control-button" id="nextTarget" type="button">Next target <span>→</span></button><button class="control-button" id="calibrate" type="button">Calibrate color <span>⌁</span></button><button class="control-button" id="resetSession" type="button">Reset session <span>↺</span></button><button class="control-button" id="saveScreenshot" type="button">Save frame <span>↓</span></button></div>
+        </aside>
+      </section>
+
+      <footer class="vision-footer"><span>CAMERA VIDEO STAYS ON THIS DEVICE</span><span id="footerStatus">No active session</span></footer>
+    </main>
+    <script type="module" src="./vision-demo.js"></script>
+  </body>
+</html>
